@@ -14,7 +14,6 @@ CGO_ENABLED=0 go build -ldflags="-s -w" -o uq main.go
 ## Run it
 ```
 ./uq "https://github.com/page?redirect=https%3A%2F%2Fmicrosoft.com%2Fredirect%3Ftarget%3Dhttps%253A%252F%252Fgoogle.com%252Fpath%253Fkey1%253Dvalue1%2526key2%253Dvalue2%26source%3Dapp&user_id=12345&session=abc123%26extra_param%3Dtrue"
-"
 ```
 ```
 {
