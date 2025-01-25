@@ -1,0 +1,14 @@
+#uq
+In the spirit of jq but for parsing url's to key value pairs and converting url encoding to ascii
+
+## Dependencies
+github.com/fatih/color
+
+## Build instructions
+go mod init uq
+go mod tidy
+go build -o uq main.go
+
+## Run it
+./uq "https://example.com/path?key1=value1&key2=value2"
+
