@@ -7,7 +7,7 @@ github.com/fatih/color
 ## Build instructions
 go mod init uq
 go mod tidy
-go build -o uq main.go
+CGO_ENABLED=0 go build -ldflags="-s -w" -o uq main.go
 
 ## Run it
 ./uq "https://example.com/path?key1=value1&key2=value2"

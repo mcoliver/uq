@@ -46,17 +46,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	baseURL := parsedURL.Scheme + "://" + parsedURL.Host + parsedURL.Path
-	queryParams := parsedURL.Query()
-
-	output := map[string]interface{}{
-		"base_url": baseURL,
-		"query":    make(map[string]string),
-	}
-
-	for key, values := range queryParams {
-		output["query"].(map[string]string)[key] = strings.Join(values, ",")
-	}
+	output := parseURL(parsedURL)
 
 	encodedOutput, err := json.MarshalIndent(output, "", "  ")
 	if err != nil {
@@ -65,6 +55,29 @@ func main() {
 	}
 
 	colorizeOutput(string(encodedOutput))
+}
+
+func parseURL(parsedURL *url.URL) map[string]interface{} {
+	baseURL := parsedURL.Scheme + "://" + parsedURL.Host + parsedURL.Path
+	queryParams := parsedURL.Query()
+
+	output := map[string]interface{}{
+		"base_url": baseURL,
+		"query":    make(map[string]interface{}),
+	}
+
+	for key, values := range queryParams {
+		if len(values) > 0 {
+			value := values[0]
+			if subURL, err := url.Parse(value); err == nil && subURL.Scheme != "" {
+				output["query"].(map[string]interface{})[key] = parseURL(subURL)
+			} else {
+				output["query"].(map[string]interface{})[key] = value
+			}
+		}
+	}
+
+	return output
 }
 
 func colorizeOutput(jsonString string) {
@@ -82,5 +95,3 @@ func colorizeOutput(jsonString string) {
 		}
 	}
 }
-
-
