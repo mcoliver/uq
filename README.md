@@ -1,5 +1,5 @@
 # uq
-In the spirit of jq but for parsing url's to key value pairs and converting url encoding to ascii
+In the spirit of jq but for parsing url's to key value pairs and converting percent/url encoding to ascii
 
 ## Dependencies
 https://github.com/fatih/color
