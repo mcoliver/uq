@@ -16,6 +16,7 @@ const version = "1.0.0"
 func main() {
 	helpFlag := flag.Bool("help", false, "Show help message")
 	versionFlag := flag.Bool("version", false, "Show version information")
+	jsonFlag := flag.Bool("json", false, "Output non colorized JSON")
 	flag.Usage = func() {
 		fmt.Fprintf(os.Stderr, "Usage: uq [options] <url>\n")
 		flag.PrintDefaults()
@@ -54,7 +55,11 @@ func main() {
 		os.Exit(1)
 	}
 
-	colorizeOutput(string(encodedOutput))
+	if *jsonFlag {
+		fmt.Println(string(encodedOutput))
+	} else {
+		colorizeOutput(string(encodedOutput))
+	}
 }
 
 func parseURL(parsedURL *url.URL) map[string]interface{} {
@@ -86,10 +91,9 @@ func colorizeOutput(jsonString string) {
 
 	lines := strings.Split(jsonString, "\n")
 	for _, line := range lines {
-		line = strings.ReplaceAll(line, "\"", "") // Strip extra quotes for formatting.
 		if strings.Contains(line, ":") {
 			parts := strings.SplitN(line, ":", 2)
-			fmt.Printf("  %s: %s\n", keyColor(strings.TrimSpace(parts[0])), stringColor(strings.TrimSpace(parts[1])))
+			fmt.Printf("  %s: %s\n", keyColor(parts[0]), stringColor(parts[1]))
 		} else {
 			fmt.Println(line)
 		}
