@@ -38,3 +38,4 @@ CGO_ENABLED=0 go build -ldflags="-s -w" -o uq main.go
   }
 }
 ```
+![image](uq-example.png)
